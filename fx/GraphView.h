@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface GraphView : UIView
-
+#define PIXELS_PER_UNIT 250
+#define SIDE 2500
+@interface GraphView : UIView {
+    NSArray * _graphPoints;
+}
+-(void) setGraphPoints:(NSArray *) graphPoints;
 @end

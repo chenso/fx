@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4A1DE3D91AD8EFC6000936CD /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1DE3D81AD8EFC6000936CD /* Stack.m */; };
 		4A1DE3DC1AD8F1C7000936CD /* EquationParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1DE3DB1AD8F1C7000936CD /* EquationParser.m */; };
+		4A1DE3DF1AD9A588000936CD /* Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1DE3DE1AD9A588000936CD /* Queue.m */; };
 		4A926AF11ACBCC0D0095C4B0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A926AF01ACBCC0D0095C4B0 /* main.m */; };
 		4A926AF41ACBCC0D0095C4B0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A926AF31ACBCC0D0095C4B0 /* AppDelegate.m */; };
 		4A926AF71ACBCC0D0095C4B0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A926AF61ACBCC0D0095C4B0 /* ViewController.m */; };
@@ -34,6 +35,8 @@
 		4A1DE3D81AD8EFC6000936CD /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
 		4A1DE3DA1AD8F1C7000936CD /* EquationParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquationParser.h; sourceTree = "<group>"; };
 		4A1DE3DB1AD8F1C7000936CD /* EquationParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquationParser.m; sourceTree = "<group>"; };
+		4A1DE3DD1AD9A588000936CD /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
+		4A1DE3DE1AD9A588000936CD /* Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Queue.m; sourceTree = "<group>"; };
 		4A926AEB1ACBCC0D0095C4B0 /* fx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A926AEF1ACBCC0D0095C4B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4A926AF01ACBCC0D0095C4B0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -104,6 +107,8 @@
 				4A926AEE1ACBCC0D0095C4B0 /* Supporting Files */,
 				4A926B161AD72C0A0095C4B0 /* GraphView.h */,
 				4A926B171AD72C0A0095C4B0 /* GraphView.m */,
+				4A1DE3DD1AD9A588000936CD /* Queue.h */,
+				4A1DE3DE1AD9A588000936CD /* Queue.m */,
 			);
 			path = fx;
 			sourceTree = "<group>";
@@ -234,6 +239,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A1DE3DF1AD9A588000936CD /* Queue.m in Sources */,
 				4A1DE3DC1AD8F1C7000936CD /* EquationParser.m in Sources */,
 				4A926AF71ACBCC0D0095C4B0 /* ViewController.m in Sources */,
 				4A926AF41ACBCC0D0095C4B0 /* AppDelegate.m in Sources */,

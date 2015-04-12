@@ -20,7 +20,7 @@
 - (void) push:(NSObject *)item;
 - (NSObject *) peek;
 - (void) clear;
-
+- (void) print;
 @end
 
 #endif

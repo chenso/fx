@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EquationParser.h"
+#import "GraphView.h"
 
-@interface ViewController : UIViewController
-
+@interface ViewController : UIViewController <UIScrollViewDelegate>
+@property (strong, nonatomic) UIScrollView *graphScrollView;
+@property (nonatomic, strong) GraphView * graph;
 
 @end
 

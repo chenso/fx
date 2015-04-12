@@ -12,7 +12,7 @@
 
 -(id) init {
     self = [super init];
-    _stack = [NSMutableArray array];
+    _stack = [NSMutableArray array]; // if performance problems switch to initWithCapacity
     return self;
 }
 
@@ -46,5 +46,11 @@
 
 -(void) clear {
     [_stack removeAllObjects];
+}
+
+-(void) print {
+    for (NSObject * obj in _stack) {
+        NSLog(@"%@", obj);
+    }
 }
 @end
