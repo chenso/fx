@@ -31,12 +31,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4A1DE3D71AD8EFC6000936CD /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
-		4A1DE3D81AD8EFC6000936CD /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
-		4A1DE3DA1AD8F1C7000936CD /* EquationParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EquationParser.h; sourceTree = "<group>"; };
-		4A1DE3DB1AD8F1C7000936CD /* EquationParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EquationParser.m; sourceTree = "<group>"; };
-		4A1DE3DD1AD9A588000936CD /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
-		4A1DE3DE1AD9A588000936CD /* Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Queue.m; sourceTree = "<group>"; };
+		4A1DE3D71AD8EFC6000936CD /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Stack.h; path = fx/Stack.h; sourceTree = "<group>"; };
+		4A1DE3D81AD8EFC6000936CD /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Stack.m; path = fx/Stack.m; sourceTree = "<group>"; };
+		4A1DE3DA1AD8F1C7000936CD /* EquationParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EquationParser.h; path = fx/EquationParser.h; sourceTree = "<group>"; };
+		4A1DE3DB1AD8F1C7000936CD /* EquationParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EquationParser.m; path = fx/EquationParser.m; sourceTree = "<group>"; };
+		4A1DE3DD1AD9A588000936CD /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = fx/Queue.h; sourceTree = "<group>"; };
+		4A1DE3DE1AD9A588000936CD /* Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Queue.m; path = fx/Queue.m; sourceTree = "<group>"; };
 		4A926AEB1ACBCC0D0095C4B0 /* fx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A926AEF1ACBCC0D0095C4B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4A926AF01ACBCC0D0095C4B0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -50,8 +50,8 @@
 		4A926B041ACBCC0D0095C4B0 /* fxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A926B091ACBCC0D0095C4B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4A926B0A1ACBCC0D0095C4B0 /* fxTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = fxTests.m; sourceTree = "<group>"; };
-		4A926B161AD72C0A0095C4B0 /* GraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphView.h; sourceTree = "<group>"; };
-		4A926B171AD72C0A0095C4B0 /* GraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphView.m; sourceTree = "<group>"; };
+		4A926B161AD72C0A0095C4B0 /* GraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GraphView.h; path = fx/GraphView.h; sourceTree = "<group>"; };
+		4A926B171AD72C0A0095C4B0 /* GraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GraphView.m; path = fx/GraphView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,9 +72,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A4067731ADC1A3500714F5C /* Graph */ = {
+			isa = PBXGroup;
+			children = (
+				4A1DE3DA1AD8F1C7000936CD /* EquationParser.h */,
+				4A1DE3DB1AD8F1C7000936CD /* EquationParser.m */,
+				4A1DE3D71AD8EFC6000936CD /* Stack.h */,
+				4A1DE3D81AD8EFC6000936CD /* Stack.m */,
+				4A926B161AD72C0A0095C4B0 /* GraphView.h */,
+				4A926B171AD72C0A0095C4B0 /* GraphView.m */,
+				4A1DE3DD1AD9A588000936CD /* Queue.h */,
+				4A1DE3DE1AD9A588000936CD /* Queue.m */,
+			);
+			name = Graph;
+			sourceTree = "<group>";
+		};
 		4A926AE21ACBCC0D0095C4B0 = {
 			isa = PBXGroup;
 			children = (
+				4A4067731ADC1A3500714F5C /* Graph */,
 				4A926AED1ACBCC0D0095C4B0 /* fx */,
 				4A926B071ACBCC0D0095C4B0 /* fxTests */,
 				4A926AEC1ACBCC0D0095C4B0 /* Products */,
@@ -93,22 +109,14 @@
 		4A926AED1ACBCC0D0095C4B0 /* fx */ = {
 			isa = PBXGroup;
 			children = (
-				4A1DE3DA1AD8F1C7000936CD /* EquationParser.h */,
-				4A1DE3DB1AD8F1C7000936CD /* EquationParser.m */,
 				4A926AF21ACBCC0D0095C4B0 /* AppDelegate.h */,
 				4A926AF31ACBCC0D0095C4B0 /* AppDelegate.m */,
 				4A926AF51ACBCC0D0095C4B0 /* ViewController.h */,
 				4A926AF61ACBCC0D0095C4B0 /* ViewController.m */,
 				4A926AF81ACBCC0D0095C4B0 /* Main.storyboard */,
-				4A1DE3D71AD8EFC6000936CD /* Stack.h */,
-				4A1DE3D81AD8EFC6000936CD /* Stack.m */,
 				4A926AFB1ACBCC0D0095C4B0 /* Images.xcassets */,
 				4A926AFD1ACBCC0D0095C4B0 /* LaunchScreen.xib */,
 				4A926AEE1ACBCC0D0095C4B0 /* Supporting Files */,
-				4A926B161AD72C0A0095C4B0 /* GraphView.h */,
-				4A926B171AD72C0A0095C4B0 /* GraphView.m */,
-				4A1DE3DD1AD9A588000936CD /* Queue.h */,
-				4A1DE3DE1AD9A588000936CD /* Queue.m */,
 			);
 			path = fx;
 			sourceTree = "<group>";

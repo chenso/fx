@@ -11,25 +11,27 @@
 @implementation ViewController
 @synthesize graphScrollView = _graphScrollView;
 @synthesize graph = _graph;
+@synthesize ep = _ep;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    EquationParser * ep = [[EquationParser alloc] init];
-    NSArray * testArray = @[@"ARCSIN", @"(", @"X", @")", @"+", @"X"];
-    NSMutableArray * test = [[NSMutableArray alloc] initWithCapacity:SIDE];
-    for (int i = -SIDE / 2; i < SIDE / 2; i++) {
-        NSNumber * x = [NSNumber numberWithDouble:i / (SIDE / 10.0)];
-        NSNumber * y = [ep parseString:testArray forX:x];
-        [test addObject:y];
-    }
-    _graphScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.width)];
+    _ep = [[EquationParser alloc] init];
+    NSArray * testArray = @[@"X", @"+", @"X", @"^2"];
+    
     _graph = [[GraphView alloc] init];
+    [_graph setBackgroundColor:[UIColor clearColor]];
+    
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTap:)];
+    [tapRecognizer setNumberOfTapsRequired:1];
+    [_graph addGestureRecognizer:tapRecognizer];
+    
+    // set up scrollView
+    _graphScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.width)];
     _graphScrollView.contentSize = _graph.frame.size;
     [_graphScrollView setBackgroundColor:[UIColor clearColor]];
-    [_graph setBackgroundColor:[UIColor clearColor]];
-    [_graphScrollView addSubview:_graph];
     _graphScrollView.delegate = self;
+
     UITapGestureRecognizer *doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewDoubleTapped:)];
     doubleTapRecognizer.numberOfTapsRequired = 2;
     doubleTapRecognizer.numberOfTouchesRequired = 1;
@@ -40,9 +42,31 @@
     twoFingerTapRecognizer.numberOfTouchesRequired = 2;
     [_graphScrollView addGestureRecognizer:twoFingerTapRecognizer];
     
+    [_graphScrollView addSubview:_graph];
     [self.view addSubview:_graphScrollView];
-    
-    [_graph setGraphPoints:test];
+    NSMutableArray * curvePoints = [[NSMutableArray alloc] initWithCapacity:SIDE];
+    for (int i = -SIDE / 2; i < SIDE / 2; i++) {
+        NSNumber * x = [NSNumber numberWithDouble:i / (SIDE / 10.0)];
+        NSNumber * y = [_ep parseEquationStringArray:testArray forX:x];
+        [curvePoints addObject:y];
+    }
+    [self setCurve:testArray];
+}
+
+-(void) singleTap:(UITapGestureRecognizer *)recognizer {
+    CGPoint location = [recognizer locationInView:recognizer.view];
+    [_graph setSelectedX:location.x];
+    [_graph setNeedsDisplay];
+}
+
+-(void) setCurve:(NSArray * ) equation {
+    NSMutableArray * curvePoints = [[NSMutableArray alloc] initWithCapacity:SIDE];
+    for (int i = -SIDE / 2; i < SIDE / 2; i++) {
+        NSNumber * x = [NSNumber numberWithDouble:i / (SIDE / 10.0)];
+        NSNumber * y = [_ep parseEquationStringArray:equation forX:x];
+        [curvePoints addObject:y];
+    }
+    [_graph setGraphPoints:curvePoints];
     [_graph setNeedsDisplay];
 }
 
@@ -104,8 +128,8 @@
     _graphScrollView.minimumZoomScale = minScale;
  
     _graphScrollView.maximumZoomScale = 1.0f;
-    _graphScrollView.zoomScale = minScale;
-
+    _graphScrollView.zoomScale = (minScale + 1.0f) / 2;
+    [_graphScrollView setContentOffset:CGPointMake(SIDE/2 - _graphScrollView.zoomScale * SIDE / 2, SIDE /2 - _graphScrollView.zoomScale * SIDE / 2) animated:YES];
     [self centerScrollViewContents];
 }
 

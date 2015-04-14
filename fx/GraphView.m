@@ -16,8 +16,6 @@
     return self;
 }
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     // Draw Axis
@@ -37,7 +35,7 @@
         CGContextAddLineToPoint(context, i * PIXELS_PER_UNIT, SIDE);
         CGContextMoveToPoint(context, 0, i * PIXELS_PER_UNIT);
         CGContextAddLineToPoint(context, SIDE, i * PIXELS_PER_UNIT);
-        UILabel *intLabelX = [[UILabel alloc] initWithFrame:CGRectMake(i * PIXELS_PER_UNIT - 15, SIDE / 2 + SIDE / 500, 60, 60)];
+        UILabel *intLabelX = [[UILabel alloc] initWithFrame:CGRectMake(i * PIXELS_PER_UNIT - 15, SIDE / 2 + SIDE / 500, 80, 60)];
         [intLabelX setText:[[NSNumber numberWithInt:i - SIDE / (PIXELS_PER_UNIT * 2)] stringValue]];
         [intLabelX setFont:[UIFont systemFontOfSize:48]];
         if (i == SIDE / (PIXELS_PER_UNIT * 2)) {
@@ -45,11 +43,10 @@
         }
         [self addSubview:intLabelX];
         if (i != SIDE / (PIXELS_PER_UNIT * 2)) {
-        UILabel * intLabelY = [[UILabel alloc] initWithFrame:CGRectMake(SIDE / 2 - SIDE / 35, i * PIXELS_PER_UNIT - 30, 60, 60)];
+        UILabel * intLabelY = [[UILabel alloc] initWithFrame:CGRectMake(SIDE / 2 - 100, i * PIXELS_PER_UNIT - 30, 80, 60)];
             [intLabelY setTextAlignment:NSTextAlignmentCenter];
         [intLabelY setFont:[UIFont systemFontOfSize:48]];
         [intLabelY setText:[[NSNumber numberWithInt:i - SIDE / (PIXELS_PER_UNIT * 2)]stringValue]];
-        [intLabelY setBackgroundColor:[UIColor whiteColor]];
         [self addSubview:intLabelY];
         }
         
@@ -74,7 +71,7 @@
         CGContextAddLineToPoint(context, i * PIXELS_PER_UNIT / 5, SIDE / 2 - SIDE / 200);
         
         CGContextMoveToPoint(context, SIDE / 2 - SIDE / 300, i * PIXELS_PER_UNIT / 5);
-        CGContextAddLineToPoint(context, SIDE/2 + SIDE / 300, i*PIXELS_PER_UNIT / 5);
+        CGContextAddLineToPoint(context, SIDE/2 + SIDE / 300, i * PIXELS_PER_UNIT / 5);
     }
     CGContextStrokePath(context);
     // draw curve
@@ -82,13 +79,34 @@
         CGContextSetLineWidth(context, 3);
         CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
         for (int i = 0; i < SIDE - 1; i++) {
-            if (!isnan([[_graphPoints objectAtIndex:i] floatValue]) && !isnan([[_graphPoints objectAtIndex:i + 1] floatValue])) {
-                CGContextMoveToPoint(context, i, SIDE / 2.0 - [(NSNumber *) [_graphPoints objectAtIndex:i] floatValue] * PIXELS_PER_UNIT);
-                CGContextAddLineToPoint(context, i + 1, SIDE / 2.0 - [(NSNumber *) [_graphPoints objectAtIndex:i + 1] floatValue] * PIXELS_PER_UNIT);
+            NSNumber * start =[_graphPoints objectAtIndex:i ];
+            NSNumber * end = [_graphPoints objectAtIndex:i + 1 ];
+            
+            if (![start isEqualToNumber:[NSDecimalNumber notANumber]] && ![end isEqualToNumber:[NSDecimalNumber notANumber]] && fabsf([start floatValue]) < DBL_MAX && fabsf([end floatValue]) < DBL_MAX ) {
+                CGContextMoveToPoint(context, i, SIDE / 2.0 - [start floatValue] * PIXELS_PER_UNIT);
+                CGContextAddLineToPoint(context, i + 1, SIDE / 2.0 - [end floatValue] * PIXELS_PER_UNIT);
             }
         }
         CGContextStrokePath(context);
     }
+    // if previewed x is set, draw preview point
+    if (x && _graphPoints) {
+        NSNumber * y = [_graphPoints objectAtIndex:x];
+        if (![y isEqualToNumber:[NSDecimalNumber notANumber]] && fabsf([y floatValue]) < DBL_MAX) {
+            CGRect borderRect = CGRectMake(x - 10, SIDE / 2 - [y floatValue] * PIXELS_PER_UNIT - 10, 20.0, 20.0);
+            CGContextRef context = UIGraphicsGetCurrentContext();
+            //CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, 1.0);
+            CGContextSetFillColorWithColor(context, [UIColor blueColor].CGColor);
+            CGContextSetLineWidth(context, 1.0);
+            CGContextFillEllipseInRect (context, borderRect);
+            CGContextStrokeEllipseInRect(context, borderRect);
+            CGContextFillPath(context);
+        }
+    }
+}
+
+-(void) setSelectedX:(CGFloat) xSelect {
+    x = xSelect;
 }
 
 -(void) setGraphPoints:(NSArray *) graphPoints {

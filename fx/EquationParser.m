@@ -20,8 +20,8 @@ enum rankings {
 -(id) init {
     self = [super init];
     _operators = [[Stack alloc] init];
-    _output = [[Queue alloc] init];
-    _readRPNStack = [[Stack alloc] init];
+    _RPNStack = [[Queue alloc] init];
+    _output = [[Stack alloc] init];
     
     [self initPrecedenceDict];
     [self initAssocDict];
@@ -31,20 +31,20 @@ enum rankings {
 }
 
 
--(NSNumber *) parseString:(NSArray *) equation forX:(NSNumber *) x {
+-(NSNumber *) parseEquationStringArray:(NSArray *) equation forX:(NSNumber *) x {
     
     // Shunting Yard
     for (NSString * str in equation) {
         if ([str isEqualToString:@"X"] || [str doubleValue] != 0) {
-            [_output enqueue:str];
+            [_RPNStack enqueue:str];
         }
         else if ([self isFunction:str]) {
             [_operators push:str];
         } else if ([self isOperator:str]) {
             /* while there is an operator token, o2, at the top of the operator stack, and o1 its precedence is less than or equal to that of o2 */
-            while (![_operators isEmpty] && [_op_precedence objectForKey:str] <= [_op_precedence objectForKey:[_operators peek]]) {
+            while ((![_operators isEmpty] && ([[_op_assoc objectForKey:str] intValue] == LEFT_ASSOC && [_op_precedence objectForKey:str] <= [_op_precedence objectForKey:[_operators peek]])) || ([[_op_assoc objectForKey:str]intValue] == RIGHT_ASSOC && [_op_precedence objectForKey:str] < [_op_precedence objectForKey:[_operators peek]])) {
                 NSString * op = (NSString *) [_operators pop];
-                [_output enqueue:op];
+                [_RPNStack enqueue:op];
                 
             }
             [_operators push:str];
@@ -56,170 +56,170 @@ enum rankings {
                     NSLog(@"Parenthesis mismatch");
                 }
                 NSString * op = (NSString *)[_operators pop];
-                [_output enqueue:op];
+                [_RPNStack enqueue:op];
                 
             }
             [_operators pop];
             if (![_operators isEmpty] && [self isFunction:(NSString *)[_operators peek] ]) {
-                [_output enqueue:(NSString *)[_operators pop]];
+                [_RPNStack enqueue:(NSString *)[_operators pop]];
             }
         }
     }
     
     while (![_operators isEmpty]) {
-        [_output enqueue:[_operators pop]];
+        [_RPNStack enqueue:[_operators pop]];
     }
     
     // Read RPN output
-    while (![_output isEmpty]) {
-        NSString * elt = (NSString *)[_output dequeue];
+    while (![_RPNStack isEmpty]) {
+        NSString * elt = (NSString *)[_RPNStack dequeue];
 
         if ([elt isEqual:@"X"]) {
-            [_readRPNStack push:x];
+            [_output push:x];
         } else if ([elt doubleValue] != 0) {
-            [_readRPNStack push:[NSNumber numberWithDouble:[elt doubleValue] ]];
+            [_output push:[NSNumber numberWithDouble:[elt doubleValue] ]];
         } else if ([self isFunction:elt] || [self isOperator:elt]) {
             if ([elt isEqualToString:@"+"]) {
-                if ([_readRPNStack count] < 2) {
+                if ([_output count] < 2) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
-                NSNumber * termTwo = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
+                NSNumber * termTwo = (NSNumber *) [_output pop];
                 NSNumber * sum = [NSNumber numberWithFloat:([termOne floatValue] + [termTwo floatValue])];
-                [_readRPNStack push:sum];
+                [_output push:sum];
             } else if ([elt isEqualToString:@"-"]) {
-                if ([_readRPNStack count] < 2) {
+                if ([_output count] < 2) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
-                NSNumber * termTwo = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
+                NSNumber * termTwo = (NSNumber *) [_output pop];
                 NSNumber * diff = [NSNumber numberWithFloat:([termTwo floatValue] - [termOne floatValue])];
-                [_readRPNStack push:diff];
+                [_output push:diff];
             } else if ([elt isEqualToString:@"*"]) {
-                if ([_readRPNStack count] < 2) {
+                if ([_output count] < 2) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
-                NSNumber * termTwo = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
+                NSNumber * termTwo = (NSNumber *) [_output pop];
                 NSNumber * mult = [NSNumber numberWithFloat:([termTwo floatValue] * [termOne floatValue])];
-                [_readRPNStack push:mult];
+                [_output push:mult];
             } else if ([elt isEqualToString:@"/"]) {
-                if ([_readRPNStack count] < 2) {
+                if ([_output count] < 2) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
-                NSNumber * termTwo = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
+                NSNumber * termTwo = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:([termTwo floatValue] / [termOne floatValue])];
-                [_readRPNStack push:div];
+                [_output push:div];
             }
-            else if ([elt isEqualToString:@"POW2"]) {
-                if ([_readRPNStack count] < 1) {
+            else if ([elt isEqualToString:@"^2"]) {
+                if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:pow([termOne floatValue], 2)];
-                [_readRPNStack push:div];
+                [_output push:div];
             }
-            else if ([elt isEqualToString:@"POW3"]) {
-                if ([_readRPNStack count] < 1) {
+            else if ([elt isEqualToString:@"^3"]) {
+                if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:pow([termOne floatValue], 3)];
-                [_readRPNStack push:div];
+                [_output push:div];
             }
             else if ([elt isEqualToString:@"SQRT"]) {
-                if ([_readRPNStack count] < 1) {
+                if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:sqrt([termOne floatValue])];
-                [_readRPNStack push:div];
+                [_output push:div];
             }
             else if ([elt isEqualToString:@"COS"]) {
-                if ([_readRPNStack count] < 1) {
+                if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:cos([termOne floatValue])];
-                [_readRPNStack push:div];
+                [_output push:div];
             }
             else if ([elt isEqualToString:@"SIN"]) {
-                if ([_readRPNStack count] < 1) {
+                if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:sin([termOne floatValue])];
-                [_readRPNStack push:div];
+                [_output push:div];
             }
             else if ([elt isEqualToString:@"TAN"]) {
-                if ([_readRPNStack count] < 1) {
+                if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:tan([termOne floatValue])];
-                [_readRPNStack push:div];
+                [_output push:div];
             }
             else if ([elt isEqualToString:@"ARCSIN"]) {
-                if ([_readRPNStack count] < 1) {
+                if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:asin([termOne floatValue])];
-                [_readRPNStack push:div];
+                [_output push:div];
             }
             else if ([elt isEqualToString:@"ARCCOS"]) {
-                if ([_readRPNStack count] < 1) {
+                if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:acos([termOne floatValue])];
-                [_readRPNStack push:div];
+                [_output push:div];
             }
             else if ([elt isEqualToString:@"ARCTAN"]) {
-                if ([_readRPNStack count] < 1) {
+                if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:atan([termOne floatValue])];
-                [_readRPNStack push:div];
+                [_output push:div];
             }
             else if ([elt isEqualToString:@"LN"]) {
-                if ([_readRPNStack count] < 1) {
+                if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:log([termOne floatValue])];
-                [_readRPNStack push:div];
+                [_output push:div];
             } else if ([elt isEqualToString:@"E"]) {
-                if ([_readRPNStack count] < 1) {
+                if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
                     return [NSNumber numberWithDouble:12.3456];
                 }
-                NSNumber * termOne = (NSNumber *) [_readRPNStack pop];
+                NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:pow(M_E, [termOne floatValue])];
-                [_readRPNStack push:div];
+                [_output push:div];
             }
         }
     }
-    if ([_readRPNStack count] == 1) return (NSNumber *)[_readRPNStack pop];
+    if ([_output count] == 1) return (NSNumber *)[_output pop];
     else {
-        [_readRPNStack clear];
         [_output clear];
+        [_RPNStack clear];
         [_operators clear];
         NSLog(@"Too many values in readRPNStack");
         return [NSNumber numberWithFloat:12.345];
@@ -229,7 +229,7 @@ enum rankings {
 
 
 -(void) initOperators {
-    _vaid_operators = @[@"+", @"-", @"/", @"*" , @"^"];
+    _vaid_operators = @[@"+", @"-", @"/", @"*" , @"^2", @"^3"];
 }
 
 -(void) initFunctions {
@@ -243,6 +243,8 @@ enum rankings {
                   @"/": [NSNumber numberWithInt:LEFT_ASSOC],
                   @"*" : [NSNumber numberWithInt:LEFT_ASSOC],
                   @"(" : [NSNumber numberWithInt:NONE_ASSOC],
+                  @"^2" : [NSNumber numberWithInt:RIGHT_ASSOC],
+                  @"^3" : [NSNumber numberWithInt:RIGHT_ASSOC],
                   @"POW2" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"POW3" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"SQRT" : [NSNumber numberWithInt:NONE_ASSOC],
@@ -300,9 +302,9 @@ enum rankings {
     NSLog(@"Operators:");
     [_operators print];
     NSLog(@"Output:");
-    [_output print];
+    [_RPNStack print];
     NSLog(@"AnswerStack:");
-    [_readRPNStack print];
+    [_output print];
 }
 
 @end

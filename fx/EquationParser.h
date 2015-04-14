@@ -10,16 +10,18 @@
 #import "Stack.h"
 #import "Queue.h"
 
+
 @interface EquationParser : NSObject {
     Stack * _operators;
-    Queue * _output;
+    Queue * _RPNStack;
     
-    Stack * _readRPNStack;
+    Stack * _output;
+    
     NSDictionary * _op_precedence;
     NSDictionary * _op_assoc;
     NSArray * _valid_functions;
     NSArray * _vaid_operators;
 }
 
--(NSNumber *) parseString:(NSArray *) equationString forX:(NSNumber *) x;
+-(NSNumber *) parseEquationStringArray:(NSArray *) equationString forX:(NSNumber *) x;
 @end
