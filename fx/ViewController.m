@@ -8,39 +8,102 @@
 
 #import "ViewController.h"
 
-@implementation ViewController
+@implementation ViewController 
 @synthesize graphScrollView = _graphScrollView;
 @synthesize graph = _graph;
+@synthesize buttonsView = _buttonsView;
+@synthesize equationView = _equationView;
 @synthesize ep = _ep;
+@synthesize fxLabel = _fxLabel;
+@synthesize backspaceButton = _backspaceButton;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setUpGraph];
+    [self setUpButtonView];
+
+}
+-(void) setUpButtonView {
+    _buttonsView = [[UIView alloc] initWithFrame:CGRectMake(0, _graphScrollView.frame.size.height, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - _graphScrollView.frame.size.height)];
+    _buttonsView.backgroundColor = [UIColor colorWithRed:0.451 green:0.545 blue:0.655 alpha:1.0];
     
+    _equationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _buttonsView.frame.size.width - 50, 0)];
+    [_equationView setBackgroundColor:[UIColor colorWithRed:0.52 green:0.74 blue:1.00 alpha:1.0]];
+    
+    UIBezierPath * eqViewShadowPath = [UIBezierPath bezierPathWithRect:_equationView.bounds ];
+    _equationView.layer.masksToBounds = NO;
+    _equationView.layer.shadowColor = [UIColor blackColor].CGColor;
+    _equationView.layer.shadowOffset = CGSizeMake(2.0f, -2.0f);
+    _equationView.layer.shadowOpacity = 0.2f;
+    _equationView.layer.shadowPath = eqViewShadowPath.CGPath;
+
+    _backspaceButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    _backspaceButton.alpha = 0.0;
+    [_backspaceButton setImage:[UIImage imageNamed:@"backspace.png"] forState:UIControlStateNormal];
+    [_equationView addSubview:_backspaceButton];
+    
+    [UIView animateWithDuration:0.5f delay:0.25f options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
+        _equationView.frame = CGRectMake(10, 10, _buttonsView.frame.size.width - 20, 50.0f *_buttonsView.frame.size.height /256.0f);
+        _backspaceButton.frame = CGRectMake(_equationView.frame.size.width - _equationView.frame.size.height, 0, _equationView.frame.size.height, _equationView.frame.size.height);
+        
+        
+    } completion:^(BOOL finished){
+        [UIView animateWithDuration:1.0f delay: 0.0f options:UIViewAnimationOptionCurveEaseOut
+                         animations:^{
+                             _backspaceButton.alpha = 1.0;
+                             UIBezierPath * eqViewShadowPath = [UIBezierPath bezierPathWithRect:_equationView.bounds ];
+                             _equationView.layer.shadowPath = eqViewShadowPath.CGPath;
+                             _graph.alpha = 1.0f;
+                         }
+                         completion:nil];
+    }];
+    [_buttonsView addSubview:_equationView];
+    
+    // add calc buttons
+    _fxLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 3 * _buttonsView.frame.size.width / 15, 2 * _buttonsView.frame.size.height / 15)];
+    //[_fxLabel setText:@"f(x)="];
+    [_fxLabel setFont:[UIFont fontWithName:@"ArialMT" size:30]];
+    [_fxLabel setTextColor:[UIColor whiteColor]];
+    //[_fxLabel setBackgroundColor:[UIColor blackColor]];
+    [_equationView addSubview:_fxLabel];
+    // add shadow to make buttonsView on a higher level than graphView
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:_buttonsView.bounds];
+    _buttonsView.layer.masksToBounds = NO;
+    _buttonsView.layer.shadowColor = [UIColor blackColor].CGColor;
+    _buttonsView.layer.shadowOffset = CGSizeMake(0.0f, -6.0f);
+    _buttonsView.layer.shadowOpacity = _graphScrollView.zoomScale;
+    _buttonsView.layer.shadowPath = shadowPath.CGPath;
+    [self setUpButtons];
+    [self.view addSubview:_buttonsView];
+}
+
+-(void) setUpButtons {
+    
+}
+
+-(void) setUpGraph {
+    UIColor * scrollBackground =[UIColor colorWithRed:0.992 green:0.996 blue:1.000 alpha:1] ;
+    
+    
+    // test equation
     _ep = [[EquationParser alloc] init];
-    NSArray * testArray = @[@"X", @"+", @"X", @"^2"];
+    NSArray * testArray = @[@"X", @"^2"];
+    
     
     _graph = [[GraphView alloc] init];
-    [_graph setBackgroundColor:[UIColor clearColor]];
+    [_graph setBackgroundColor:scrollBackground];
     
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTap:)];
     [tapRecognizer setNumberOfTapsRequired:1];
     [_graph addGestureRecognizer:tapRecognizer];
     
+    
     // set up scrollView
     _graphScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.width)];
     _graphScrollView.contentSize = _graph.frame.size;
-    [_graphScrollView setBackgroundColor:[UIColor clearColor]];
+    [_graphScrollView setBackgroundColor:scrollBackground];
     _graphScrollView.delegate = self;
-
-    UITapGestureRecognizer *doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewDoubleTapped:)];
-    doubleTapRecognizer.numberOfTapsRequired = 2;
-    doubleTapRecognizer.numberOfTouchesRequired = 1;
-    [_graphScrollView addGestureRecognizer:doubleTapRecognizer];
-    
-    UITapGestureRecognizer *twoFingerTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewTwoFingerTapped:)];
-    twoFingerTapRecognizer.numberOfTapsRequired = 1;
-    twoFingerTapRecognizer.numberOfTouchesRequired = 2;
-    [_graphScrollView addGestureRecognizer:twoFingerTapRecognizer];
     
     [_graphScrollView addSubview:_graph];
     [self.view addSubview:_graphScrollView];
@@ -54,6 +117,7 @@
 }
 
 -(void) singleTap:(UITapGestureRecognizer *)recognizer {
+    // TODO : create circle dot uiview instead of having to redraw the whole graph every time a location is tapped
     CGPoint location = [recognizer locationInView:recognizer.view];
     [_graph setSelectedX:location.x];
     [_graph setNeedsDisplay];
@@ -70,33 +134,15 @@
     [_graph setNeedsDisplay];
 }
 
-- (void)scrollViewTwoFingerTapped:(UITapGestureRecognizer*)recognizer {
-    // Zoom out
-    CGFloat newZoomScale = _graphScrollView.zoomScale / 1.5f;
-    newZoomScale = MAX(newZoomScale, _graphScrollView.minimumZoomScale);
-    [_graphScrollView setZoomScale:newZoomScale animated:YES];
-}
-
-- (void)scrollViewDoubleTapped:(UITapGestureRecognizer*)recognizer {
-    CGPoint pointInView = [recognizer locationInView:_graph];
-
-    CGFloat newZoomScale = _graphScrollView.zoomScale * 1.5f;
-    newZoomScale = MIN(newZoomScale, _graphScrollView.maximumZoomScale);
-    
-    CGSize scrollViewSize = _graphScrollView.bounds.size;
-    
-    CGFloat w = scrollViewSize.width / newZoomScale;
-    CGFloat h = scrollViewSize.height / newZoomScale;
-    CGFloat x = pointInView.x - (w / 2.0f);
-    CGFloat y = pointInView.y - (h / 2.0f);
-    
-    CGRect rectToZoomTo = CGRectMake(x, y, w, h);
-    
-    [_graphScrollView zoomToRect:rectToZoomTo animated:YES];
-}
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)_graphScrollView {
     return _graph;
+}
+
+-(void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    // the size of the shadow scales with the distance zoomed out
+    _buttonsView.layer.shadowOpacity = _graphScrollView.zoomScale;
+    _buttonsView.layer.shadowOffset = CGSizeMake(0.0f, -1.0 / _graphScrollView.zoomScale);
 }
 
 -(void) centerScrollViewContents{

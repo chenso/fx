@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #define PIXELS_PER_UNIT 250
-#define SIDE 3000
+#define SIDE 2500
 @interface GraphView : UIView {
     NSArray * _graphPoints;
     CGFloat x;

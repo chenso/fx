@@ -10,6 +10,8 @@
 		4A1DE3D91AD8EFC6000936CD /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1DE3D81AD8EFC6000936CD /* Stack.m */; };
 		4A1DE3DC1AD8F1C7000936CD /* EquationParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1DE3DB1AD8F1C7000936CD /* EquationParser.m */; };
 		4A1DE3DF1AD9A588000936CD /* Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1DE3DE1AD9A588000936CD /* Queue.m */; };
+		4A5148991ADDEF9700DA593B /* CalcButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A5148981ADDEF9700DA593B /* CalcButton.m */; };
+		4A51489D1ADF2BB300DA593B /* backspace.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A51489C1ADF2BB300DA593B /* backspace.png */; };
 		4A926AF11ACBCC0D0095C4B0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A926AF01ACBCC0D0095C4B0 /* main.m */; };
 		4A926AF41ACBCC0D0095C4B0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A926AF31ACBCC0D0095C4B0 /* AppDelegate.m */; };
 		4A926AF71ACBCC0D0095C4B0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A926AF61ACBCC0D0095C4B0 /* ViewController.m */; };
@@ -37,6 +39,9 @@
 		4A1DE3DB1AD8F1C7000936CD /* EquationParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EquationParser.m; path = fx/EquationParser.m; sourceTree = "<group>"; };
 		4A1DE3DD1AD9A588000936CD /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = fx/Queue.h; sourceTree = "<group>"; };
 		4A1DE3DE1AD9A588000936CD /* Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Queue.m; path = fx/Queue.m; sourceTree = "<group>"; };
+		4A5148971ADDEF9700DA593B /* CalcButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CalcButton.h; path = fx/CalcButton.h; sourceTree = "<group>"; };
+		4A5148981ADDEF9700DA593B /* CalcButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CalcButton.m; path = fx/CalcButton.m; sourceTree = "<group>"; };
+		4A51489C1ADF2BB300DA593B /* backspace.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backspace.png; sourceTree = "<group>"; };
 		4A926AEB1ACBCC0D0095C4B0 /* fx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A926AEF1ACBCC0D0095C4B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4A926AF01ACBCC0D0095C4B0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -75,6 +80,8 @@
 		4A4067731ADC1A3500714F5C /* Graph */ = {
 			isa = PBXGroup;
 			children = (
+				4A5148971ADDEF9700DA593B /* CalcButton.h */,
+				4A5148981ADDEF9700DA593B /* CalcButton.m */,
 				4A1DE3DA1AD8F1C7000936CD /* EquationParser.h */,
 				4A1DE3DB1AD8F1C7000936CD /* EquationParser.m */,
 				4A1DE3D71AD8EFC6000936CD /* Stack.h */,
@@ -110,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				4A926AF21ACBCC0D0095C4B0 /* AppDelegate.h */,
+				4A51489C1ADF2BB300DA593B /* backspace.png */,
 				4A926AF31ACBCC0D0095C4B0 /* AppDelegate.m */,
 				4A926AF51ACBCC0D0095C4B0 /* ViewController.h */,
 				4A926AF61ACBCC0D0095C4B0 /* ViewController.m */,
@@ -228,6 +236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A926AFA1ACBCC0D0095C4B0 /* Main.storyboard in Resources */,
+				4A51489D1ADF2BB300DA593B /* backspace.png in Resources */,
 				4A926AFF1ACBCC0D0095C4B0 /* LaunchScreen.xib in Resources */,
 				4A926AFC1ACBCC0D0095C4B0 /* Images.xcassets in Resources */,
 			);
@@ -253,6 +262,7 @@
 				4A926AF41ACBCC0D0095C4B0 /* AppDelegate.m in Sources */,
 				4A926AF11ACBCC0D0095C4B0 /* main.m in Sources */,
 				4A1DE3D91AD8EFC6000936CD /* Stack.m in Sources */,
+				4A5148991ADDEF9700DA593B /* CalcButton.m in Sources */,
 				4A926B181AD72C0A0095C4B0 /* GraphView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
