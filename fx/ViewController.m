@@ -131,6 +131,7 @@
             if(i * columns + j == [terms count]) goto end;
             NSString * term = [terms objectAtIndex:i * columns + j];
             NSNumber * pointValue = [_gameState.termValues objectForKey:term];
+            // TODO: make dict of string representation of terms e.g. * becomes ×, SQRT becomes √
             NSString *title = [NSString stringWithFormat:@"%@ | %@",pointValue, term];
             CalcButton * button = [[CalcButton alloc] initWithFrame:CGRectMake(j * xIncr, 1.2f * _equationView.frame.size.height + i * yIncr, buttonWidth, buttonHeight) stringRep:term title:title];
             [_equationButtons addObject:button];
