@@ -116,31 +116,37 @@
 }
 
 -(void) setUpButtons {
-    // TODO: set each button up and add to
+    // set each button up and add to button array
+    
     NSArray * terms = @[@"X", @"+", @"-", @"*", @"/", @"^2", @"^3", @"SQRT", @"CBRT", @"SIN", @"COS", @"TAN", @"ARCSIN", @"ARCCOS", @"ARCTAN", @"LN", @"E", @")"];
+    _equationButtons = [[NSMutableArray alloc] initWithCapacity:[terms count]];
     CGFloat buttonWidth = _buttonsView.frame.size.width / 6.0;
     CGFloat buttonHeight = _buttonsView.frame.size.height / 5.0;
     CGFloat xIncr = _buttonsView.frame.size.width / 5.5;
     CGFloat yIncr = _buttonsView.frame.size.height / 7.0;
     int i = 0;
+    int columns = 5;
     while (true) {
-        for (int j = 0; j < 5; j++) {
-            if(i * 5 + j == [terms count]) goto end;
-            NSString * term = [terms objectAtIndex:i * 5 + j];
+        for (int j = 0; j < columns; j++) {
+            if(i * columns + j == [terms count]) goto end;
+            NSString * term = [terms objectAtIndex:i * columns + j];
             NSNumber * pointValue = [_gameState.termValues objectForKey:term];
             NSString *title = [NSString stringWithFormat:@"%@ | %@",pointValue, term];
             CalcButton * button = [[CalcButton alloc] initWithFrame:CGRectMake(j * xIncr, 1.2f * _equationView.frame.size.height + i * yIncr, buttonWidth, buttonHeight) stringRep:term title:title];
-            
+            [_equationButtons addObject:button];
             [_buttonsView addSubview:button];
         }
         i++;
     }
-end: ;
+end: //TODO: set up send button in the bottom left of buttonview
+    ;
+    
 }
 
 
 -(void) singleTap:(UITapGestureRecognizer *)recognizer {
     // TODO : create circle dot uiview instead of having to redraw the whole graph every time a location is tapped
+            // add UILabel with (x,y) truncated to 2 decimal places whose location relative to the dot is dependent on the dot's quadrant
     CGPoint location = [recognizer locationInView:recognizer.view];
     [_graph setSelectedX:location.x];
     [_graph setNeedsDisplay];
