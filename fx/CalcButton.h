@@ -13,5 +13,5 @@
     NSNumber * pointValue;
 }
 
--(id) initWithFrame:(CGRect)frame stringRep:(NSString *)stringrep title:(NSString *) title;
+-(id) initWithFrame:(CGRect)frame stringRep:(NSString *)stringrep title:(NSMutableAttributedString *) title;
 @end

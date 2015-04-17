@@ -119,6 +119,8 @@
 		4A926AED1ACBCC0D0095C4B0 /* fx */ = {
 			isa = PBXGroup;
 			children = (
+				4A3C74571AE067A300D32C5B /* fxGame.h */,
+				4A3C74581AE067A300D32C5B /* fxGame.m */,
 				4A926AF21ACBCC0D0095C4B0 /* AppDelegate.h */,
 				4A51489C1ADF2BB300DA593B /* backspace.png */,
 				4A926AF31ACBCC0D0095C4B0 /* AppDelegate.m */,
@@ -128,8 +130,6 @@
 				4A926AFB1ACBCC0D0095C4B0 /* Images.xcassets */,
 				4A926AFD1ACBCC0D0095C4B0 /* LaunchScreen.xib */,
 				4A926AEE1ACBCC0D0095C4B0 /* Supporting Files */,
-				4A3C74571AE067A300D32C5B /* fxGame.h */,
-				4A3C74581AE067A300D32C5B /* fxGame.m */,
 			);
 			path = fx;
 			sourceTree = "<group>";

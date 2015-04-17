@@ -118,22 +118,65 @@
 -(void) setUpButtons {
     // set each button up and add to button array
     
-    NSArray * terms = @[@"X", @"+", @"-", @"*", @"/", @"^2", @"^3", @"SQRT", @"CBRT", @"SIN", @"COS", @"TAN", @"ARCSIN", @"ARCCOS", @"ARCTAN", @"LN", @"E", @")"];
+    NSArray * terms = @[@"X", @"+", @"-", @"*", @"/", @"^2", @"^3", @"SQRT", @"CBRT", @"SIN", @"COS", @"ARCSIN", @"ARCCOS", @"LN", @"E", @")"];
+    NSDictionary * termStringRep = @{
+                                     @"X"   : @"X",
+                                     @"+"   : @"+",
+                                     @"-"   : @"-",
+                                     @"*"   : @"×",
+                                     @"/"   : @"/",
+                                     @"^2"  : @"x2",
+                                     @"^3"  : @"x3",
+                                     @"SQRT": @"√",
+                                     @"CBRT": @"3√",
+                                     @"SIN" : @"sin",
+                                     @"COS" : @"cos",
+                                     @"TAN" : @"tan",
+                                     @"ARCSIN"  : @"sin-1",
+                                     @"ARCCOS"  : @"cos-1",
+                                     @"LN"   : @"ln",
+                                     @"E"    : @"ex",
+                                     @")"    : @")"
+                                     
+                     };
     _equationButtons = [[NSMutableArray alloc] initWithCapacity:[terms count]];
     CGFloat buttonWidth = _buttonsView.frame.size.width / 6.0;
     CGFloat buttonHeight = _buttonsView.frame.size.height / 5.0;
-    CGFloat xIncr = _buttonsView.frame.size.width / 5.5;
-    CGFloat yIncr = _buttonsView.frame.size.height / 7.0;
+    CGFloat xIncr = _buttonsView.frame.size.width / 5.0;
+    CGFloat yIncr = _buttonsView.frame.size.height / 5.6;
     int i = 0;
-    int columns = 5;
+    int columns = 4;
     while (true) {
         for (int j = 0; j < columns; j++) {
             if(i * columns + j == [terms count]) goto end;
             NSString * term = [terms objectAtIndex:i * columns + j];
             NSNumber * pointValue = [_gameState.termValues objectForKey:term];
-            // TODO: make dict of string representation of terms e.g. * becomes ×, SQRT becomes √
-            NSString *title = [NSString stringWithFormat:@"%@ | %@",pointValue, term];
-            CalcButton * button = [[CalcButton alloc] initWithFrame:CGRectMake(j * xIncr, 1.2f * _equationView.frame.size.height + i * yIncr, buttonWidth, buttonHeight) stringRep:term title:title];
+            NSString * stringRep = [termStringRep objectForKey:term];
+            
+            CalcButton * button;
+            double fontSize = 35.0f * _buttonsView.frame.size.width / 768.0f;
+            UIFont *fnt = [UIFont fontWithName:@"Helvetica" size:fontSize];
+            
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:stringRep attributes:@{NSFontAttributeName: [fnt fontWithSize:fontSize]}];
+            NSRange superscriptRange;
+            
+            if ([term isEqualToString:@"^2"] || [term isEqualToString:@"^3"] || [term isEqualToString:@"E"]) {
+                superscriptRange = NSMakeRange(1, 1);
+
+            } else if ([term isEqualToString:@"CBRT"]) {
+                superscriptRange = NSMakeRange(0, 1);
+            }
+            else if ([term isEqualToString:@"ARCSIN"] || [term isEqualToString:@"ARCCOS"]) {
+                superscriptRange = NSMakeRange(3, 2);
+            } else {
+                superscriptRange = NSMakeRange(0, 0);
+            }
+            [attributedString setAttributes:@{NSFontAttributeName : [fnt fontWithSize:fontSize / 2]
+                                              , NSBaselineOffsetAttributeName : @10} range:superscriptRange];
+            
+
+            button = [[CalcButton alloc] initWithFrame:CGRectMake(j * xIncr, 1.2f * _equationView.frame.size.height + i * yIncr, buttonWidth, buttonHeight) stringRep:term title:attributedString];
+            // make dict of string representation of terms e.g. * becomes ×, SQRT becomes √
             [_equationButtons addObject:button];
             [_buttonsView addSubview:button];
         }

@@ -235,7 +235,7 @@ enum rankings {
 }
 
 -(void) initFunctions {
-    _valid_functions = @[@"SQRT", @"CBRT", @"SIN", @"COS", /*@"POW2", @"POW3",*/ @"TAN", @"ARCSIN", @"ARCCOS", @"ARCTAN", @"LN", @"E"];
+    _valid_functions = @[@"SQRT", @"CBRT", @"SIN", @"COS", @"ARCSIN", @"ARCCOS", @"LN", @"E"];
 }
 
 -(void) initAssocDict {
@@ -247,16 +247,12 @@ enum rankings {
                   @"(" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"^2" : [NSNumber numberWithInt:RIGHT_ASSOC],
                   @"^3" : [NSNumber numberWithInt:RIGHT_ASSOC],
-                  //@"POW2" : [NSNumber numberWithInt:NONE_ASSOC],
-                  //@"POW3" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"SQRT" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"CBRT" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"SIN" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"COS" : [NSNumber numberWithInt:NONE_ASSOC],
-                  @"TAN" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"ARCSIN": [NSNumber numberWithInt:NONE_ASSOC],
                   @"ARCCOS" : [NSNumber numberWithInt:NONE_ASSOC],
-                  @"ARCTAN" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"LN" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"E" : [NSNumber numberWithInt:NONE_ASSOC],
                   };
@@ -271,16 +267,12 @@ enum rankings {
                        @"^2"    : [NSNumber numberWithInt:3],
                        @"^3"    : [NSNumber numberWithInt:3],
                        @"("     : [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
-                       //@"POW2": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
-                       //@"POW3": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
                        @"SQRT": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
                        @"CBRT": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
                        @"SIN": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
                        @"COS": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
-                       @"TAN": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
                        @"ARCSIN": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
                        @"ARCCOS": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
-                       @"ARCTAN": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
                        @"LN": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
                        @"E": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
                        };
