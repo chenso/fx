@@ -5,6 +5,7 @@
 //  Created by Songge Chen on 4/11/15.
 //  Copyright (c) 2015 Songge Chen. All rights reserved.
 //
+// Reads an array of strings representing an equation and returns the y value for a given x value
 
 #import <Foundation/Foundation.h>
 #import "Stack.h"

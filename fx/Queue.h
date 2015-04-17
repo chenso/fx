@@ -5,6 +5,7 @@
 //  Created by Songge Chen on 4/11/15.
 //  Copyright (c) 2015 Songge Chen. All rights reserved.
 //
+// definition of simple queue to use with shunting yard algorithm in EquationParser
 
 #import <Foundation/Foundation.h>
 

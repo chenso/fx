@@ -11,16 +11,21 @@
 #import "EquationParser.h"
 #import "GraphView.h"
 #import "CalcButton.h"
+#import "fxGame.h"
 
 @interface ViewController : UIViewController <UIScrollViewDelegate> {
-    NSMutableArray * equationButtons;
+    NSMutableArray * _equationButtons;
+    NSDictionary * _termValues;
 }
-@property (strong, nonatomic) UIScrollView *graphScrollView;
-@property (nonatomic, strong) GraphView * graph;
-@property (nonatomic, strong) UIView * buttonsView;
-@property (nonatomic, strong) UIView * equationView;
-@property (nonatomic, strong) EquationParser * ep;
-@property (nonatomic, strong) UILabel * fxLabel;
-@property (nonatomic, strong) UIButton * backspaceButton;
+@property (strong) UIScrollView * graphScrollView;
+@property (strong) UIView * buttonsView;
+@property (strong) UIView * equationView;
+@property (strong) GraphView * graph;
+@property (strong) UILabel * fxLabel;
+@property (strong) UIButton * backspaceButton;
+
+@property (strong) EquationParser * ep;
+@property (strong) fxGame * gameState;
+
 @end
 

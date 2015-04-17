@@ -8,6 +8,8 @@
 
 #import "EquationParser.h"
 
+const static double insufficientValuesError = 12.3456;
+
 enum rankings {
     OPEN_BRACKET_PRECEDENCE = 10,
     LEFT_ASSOC = 99,
@@ -82,7 +84,7 @@ enum rankings {
             if ([elt isEqualToString:@"+"]) {
                 if ([_output count] < 2) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * termTwo = (NSNumber *) [_output pop];
@@ -91,7 +93,7 @@ enum rankings {
             } else if ([elt isEqualToString:@"-"]) {
                 if ([_output count] < 2) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * termTwo = (NSNumber *) [_output pop];
@@ -100,7 +102,7 @@ enum rankings {
             } else if ([elt isEqualToString:@"*"]) {
                 if ([_output count] < 2) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * termTwo = (NSNumber *) [_output pop];
@@ -109,7 +111,7 @@ enum rankings {
             } else if ([elt isEqualToString:@"/"]) {
                 if ([_output count] < 2) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * termTwo = (NSNumber *) [_output pop];
@@ -119,7 +121,7 @@ enum rankings {
             else if ([elt isEqualToString:@"^2"]) {
                 if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:pow([termOne floatValue], 2)];
@@ -128,7 +130,7 @@ enum rankings {
             else if ([elt isEqualToString:@"^3"]) {
                 if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:pow([termOne floatValue], 3)];
@@ -137,7 +139,7 @@ enum rankings {
             else if ([elt isEqualToString:@"SQRT"]) {
                 if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:sqrt([termOne floatValue])];
@@ -146,7 +148,7 @@ enum rankings {
             else if ([elt isEqualToString:@"COS"]) {
                 if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:cos([termOne floatValue])];
@@ -155,7 +157,7 @@ enum rankings {
             else if ([elt isEqualToString:@"SIN"]) {
                 if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:sin([termOne floatValue])];
@@ -164,7 +166,7 @@ enum rankings {
             else if ([elt isEqualToString:@"TAN"]) {
                 if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:tan([termOne floatValue])];
@@ -173,7 +175,7 @@ enum rankings {
             else if ([elt isEqualToString:@"ARCSIN"]) {
                 if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:asin([termOne floatValue])];
@@ -182,7 +184,7 @@ enum rankings {
             else if ([elt isEqualToString:@"ARCCOS"]) {
                 if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:acos([termOne floatValue])];
@@ -191,7 +193,7 @@ enum rankings {
             else if ([elt isEqualToString:@"ARCTAN"]) {
                 if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:atan([termOne floatValue])];
@@ -200,7 +202,7 @@ enum rankings {
             else if ([elt isEqualToString:@"LN"]) {
                 if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:log([termOne floatValue])];
@@ -208,7 +210,7 @@ enum rankings {
             } else if ([elt isEqualToString:@"E"]) {
                 if ([_output count] < 1) {
                     NSLog(@"Insufficient values");
-                    return [NSNumber numberWithDouble:12.3456];
+                    return [NSNumber numberWithDouble:insufficientValuesError];
                 }
                 NSNumber * termOne = (NSNumber *) [_output pop];
                 NSNumber * div = [NSNumber numberWithFloat:pow(M_E, [termOne floatValue])];
@@ -233,7 +235,7 @@ enum rankings {
 }
 
 -(void) initFunctions {
-    _valid_functions = @[@"SQRT", @"CBRT", @"SIN", @"COS", @"POW2", @"POW3", @"TAN", @"ARCSIN", @"ARCCOS", @"ARCTAN", @"LN", @"E"];
+    _valid_functions = @[@"SQRT", @"CBRT", @"SIN", @"COS", /*@"POW2", @"POW3",*/ @"TAN", @"ARCSIN", @"ARCCOS", @"ARCTAN", @"LN", @"E"];
 }
 
 -(void) initAssocDict {
@@ -245,8 +247,8 @@ enum rankings {
                   @"(" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"^2" : [NSNumber numberWithInt:RIGHT_ASSOC],
                   @"^3" : [NSNumber numberWithInt:RIGHT_ASSOC],
-                  @"POW2" : [NSNumber numberWithInt:NONE_ASSOC],
-                  @"POW3" : [NSNumber numberWithInt:NONE_ASSOC],
+                  //@"POW2" : [NSNumber numberWithInt:NONE_ASSOC],
+                  //@"POW3" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"SQRT" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"CBRT" : [NSNumber numberWithInt:NONE_ASSOC],
                   @"SIN" : [NSNumber numberWithInt:NONE_ASSOC],
@@ -269,8 +271,8 @@ enum rankings {
                        @"^2"    : [NSNumber numberWithInt:3],
                        @"^3"    : [NSNumber numberWithInt:3],
                        @"("     : [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
-                       @"POW2": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
-                       @"POW3": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
+                       //@"POW2": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
+                       //@"POW3": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
                        @"SQRT": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
                        @"CBRT": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],
                        @"SIN": [NSNumber numberWithInt:OPEN_BRACKET_PRECEDENCE],

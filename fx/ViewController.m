@@ -16,9 +16,11 @@
 @synthesize ep = _ep;
 @synthesize fxLabel = _fxLabel;
 @synthesize backspaceButton = _backspaceButton;
+@synthesize gameState = _gameState;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setUpGameState];
     [self setUpGraph];
     [self setUpButtonView];
 
@@ -37,7 +39,7 @@
     _equationView.layer.shadowOpacity = 0.2f;
     _equationView.layer.shadowPath = eqViewShadowPath.CGPath;
 
-    _backspaceButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    _backspaceButton = [[UIButton alloc] initWithFrame:CGRectMake((_buttonsView.frame.size.width - 20) / 2, 0, 0, 0)];
     _backspaceButton.alpha = 0.0;
     [_backspaceButton setImage:[UIImage imageNamed:@"backspace.png"] forState:UIControlStateNormal];
     [_equationView addSubview:_backspaceButton];
@@ -48,19 +50,25 @@
         _backspaceButton.frame = CGRectMake(_equationView.frame.size.width - _equationView.frame.size.height, 0, _equationView.frame.size.height, _equationView.frame.size.height);
         
         
-    } completion:^(BOOL finished){
-        [UIView animateWithDuration:1.0f delay: 0.0f options:UIViewAnimationOptionCurveEaseOut
+    } completion: ^(BOOL finished){
+        [UIView animateWithDuration:0.07f delay: 0.0f options:UIViewAnimationOptionCurveEaseOut
                          animations:^{
-                             _backspaceButton.alpha = 1.0;
+                             //_backspaceButton.alpha = 1.0;
                              UIBezierPath * eqViewShadowPath = [UIBezierPath bezierPathWithRect:_equationView.bounds ];
                              _equationView.layer.shadowPath = eqViewShadowPath.CGPath;
-                             _graph.alpha = 1.0f;
                          }
                          completion:nil];
     }];
+    [UIView animateWithDuration:1.0f delay: 0.5f options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         _backspaceButton.alpha = 1.0;
+                     }
+                     completion:nil];
+    
     [_buttonsView addSubview:_equationView];
     
-    // add calc buttons
+    [self setUpButtons];
+    
     _fxLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 3 * _buttonsView.frame.size.width / 15, 2 * _buttonsView.frame.size.height / 15)];
     //[_fxLabel setText:@"f(x)="];
     [_fxLabel setFont:[UIFont fontWithName:@"ArialMT" size:30]];
@@ -78,19 +86,15 @@
     [self.view addSubview:_buttonsView];
 }
 
--(void) setUpButtons {
-    
+
+-(void) setUpGameState {
+    _ep = [[EquationParser alloc] init];
+    NSMutableArray * test = [NSMutableArray arrayWithObjects:@"X", nil];
+    _gameState = [[fxGame alloc] initWithEquation:test difficulty:0]; // TODO: set up difficulty setting
 }
 
 -(void) setUpGraph {
     UIColor * scrollBackground =[UIColor colorWithRed:0.992 green:0.996 blue:1.000 alpha:1] ;
-    
-    
-    // test equation
-    _ep = [[EquationParser alloc] init];
-    NSArray * testArray = @[@"X", @"^2"];
-    
-    
     _graph = [[GraphView alloc] init];
     [_graph setBackgroundColor:scrollBackground];
     
@@ -107,14 +111,33 @@
     
     [_graphScrollView addSubview:_graph];
     [self.view addSubview:_graphScrollView];
-    NSMutableArray * curvePoints = [[NSMutableArray alloc] initWithCapacity:SIDE];
-    for (int i = -SIDE / 2; i < SIDE / 2; i++) {
-        NSNumber * x = [NSNumber numberWithDouble:i / (SIDE / 10.0)];
-        NSNumber * y = [_ep parseEquationStringArray:testArray forX:x];
-        [curvePoints addObject:y];
-    }
-    [self setCurve:testArray];
+    NSArray * equation = _gameState.equation;
+    [self setCurve:equation];
 }
+
+-(void) setUpButtons {
+    // TODO: set each button up and add to
+    NSArray * terms = @[@"X", @"+", @"-", @"*", @"/", @"^2", @"^3", @"SQRT", @"CBRT", @"SIN", @"COS", @"TAN", @"ARCSIN", @"ARCCOS", @"ARCTAN", @"LN", @"E", @")"];
+    CGFloat buttonWidth = _buttonsView.frame.size.width / 6.0;
+    CGFloat buttonHeight = _buttonsView.frame.size.height / 5.0;
+    CGFloat xIncr = _buttonsView.frame.size.width / 5.5;
+    CGFloat yIncr = _buttonsView.frame.size.height / 7.0;
+    int i = 0;
+    while (true) {
+        for (int j = 0; j < 5; j++) {
+            if(i * 5 + j == [terms count]) goto end;
+            NSString * term = [terms objectAtIndex:i * 5 + j];
+            NSNumber * pointValue = [_gameState.termValues objectForKey:term];
+            NSString *title = [NSString stringWithFormat:@"%@ | %@",pointValue, term];
+            CalcButton * button = [[CalcButton alloc] initWithFrame:CGRectMake(j * xIncr, 1.2f * _equationView.frame.size.height + i * yIncr, buttonWidth, buttonHeight) stringRep:term title:title];
+            
+            [_buttonsView addSubview:button];
+        }
+        i++;
+    }
+end: ;
+}
+
 
 -(void) singleTap:(UITapGestureRecognizer *)recognizer {
     // TODO : create circle dot uiview instead of having to redraw the whole graph every time a location is tapped

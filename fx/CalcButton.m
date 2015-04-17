@@ -15,6 +15,8 @@
         _stringRepresentation = stringrep;
     }
     self.titleLabel.textAlignment = NSTextAlignmentRight;
+    [self setTitleColor:[UIColor colorWithRed:0.024f green:0.114f blue:0.22f alpha:1.0f] forState:UIControlStateNormal];
+    [self setTitleColor:[UIColor colorWithRed:0.24f green:0.34f blue:0.52f alpha:1.0f] forState:UIControlStateHighlighted];
     [self setTitle:title forState:UIControlStateNormal];
     return self;
 }
