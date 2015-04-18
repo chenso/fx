@@ -9,6 +9,9 @@
 #import "CalcButton.h"
 
 @implementation CalcButton
+@synthesize stringRepresentation = _stringRepresentation;
+@synthesize pointValue = _pointValue;
+
 -(id) initWithFrame:(CGRect)frame stringRep:(NSString *) stringrep title:(NSMutableAttributedString *) title{
     self = [super initWithFrame:frame];
     if (self) {

@@ -18,6 +18,8 @@
 @synthesize backspaceButton = _backspaceButton;
 @synthesize gameState = _gameState;
 
+#pragma View Set Up
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUpGameState];
@@ -25,10 +27,26 @@
     [self setUpButtonView];
 
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    CGRect scrollViewFrame = _graphScrollView.frame;
+    CGFloat scaleWidth = scrollViewFrame.size.width / _graphScrollView.contentSize.width;
+    CGFloat scaleHeight = scrollViewFrame.size.height / _graphScrollView.contentSize.height;
+    CGFloat minScale = MIN(scaleWidth, scaleHeight);
+    _graphScrollView.minimumZoomScale = minScale;
+    
+    _graphScrollView.maximumZoomScale = 1.0f;
+    _graphScrollView.zoomScale = (minScale + 1.0f) / 2;
+    [_graphScrollView setContentOffset:CGPointMake(SIDE/2 - _graphScrollView.zoomScale * SIDE / 2, SIDE /2 - _graphScrollView.zoomScale * SIDE / 2) animated:YES];
+    [self centerScrollViewContents];
+}
+
 -(void) setUpButtonView {
     _buttonsView = [[UIView alloc] initWithFrame:CGRectMake(0, _graphScrollView.frame.size.height, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height - _graphScrollView.frame.size.height)];
     _buttonsView.backgroundColor = [UIColor colorWithRed:0.451 green:0.545 blue:0.655 alpha:1.0];
-    
+
     _equationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _buttonsView.frame.size.width - 50, 0)];
     [_equationView setBackgroundColor:[UIColor colorWithRed:0.52 green:0.74 blue:1.00 alpha:1.0]];
     
@@ -87,6 +105,7 @@
 }
 
 
+
 -(void) setUpGameState {
     _ep = [[EquationParser alloc] init];
     NSMutableArray * test = [NSMutableArray arrayWithObjects:@"X", nil];
@@ -118,7 +137,7 @@
 -(void) setUpButtons {
     // set each button up and add to button array
     
-    NSArray * terms = @[@"X", @"+", @"-", @"*", @"/", @"^2", @"^3", @"SQRT", @"CBRT", @"SIN", @"COS", @"ARCSIN", @"ARCCOS", @"LN", @"E", @")"];
+    NSArray * terms = @[@"X", @"+", @"*", @"LN", @")", @"-", @"/", @"E", @"^2", @"^3", @"SIN", @"COS", @"SQRT", @"CBRT", @"ARCSIN", @"ARCCOS"];
     NSDictionary * termStringRep = @{
                                      @"X"   : @"X",
                                      @"+"   : @"+",
@@ -174,9 +193,11 @@
             [attributedString setAttributes:@{NSFontAttributeName : [fnt fontWithSize:fontSize / 2]
                                               , NSBaselineOffsetAttributeName : @10} range:superscriptRange];
             
-
+            
             button = [[CalcButton alloc] initWithFrame:CGRectMake(j * xIncr, 1.2f * _equationView.frame.size.height + i * yIncr, buttonWidth, buttonHeight) stringRep:term title:attributedString];
-            // make dict of string representation of terms e.g. * becomes ×, SQRT becomes √
+            
+            [button addTarget:self action:@selector(handleCalcButtonPress:) forControlEvents:UIControlEventTouchUpInside];
+            
             [_equationButtons addObject:button];
             [_buttonsView addSubview:button];
         }
@@ -187,14 +208,17 @@ end: //TODO: set up send button in the bottom left of buttonview
     
 }
 
-
--(void) singleTap:(UITapGestureRecognizer *)recognizer {
-    // TODO : create circle dot uiview instead of having to redraw the whole graph every time a location is tapped
-            // add UILabel with (x,y) truncated to 2 decimal places whose location relative to the dot is dependent on the dot's quadrant
-    CGPoint location = [recognizer locationInView:recognizer.view];
-    [_graph setSelectedX:location.x];
-    [_graph setNeedsDisplay];
+-(void)handleCalcButtonPress:(id)sender {
+    CalcButton * button = (CalcButton * ) sender;
+    //TODO
+    
+    NSString * term = [button stringRepresentation];
+    
+    [[_gameState equation] insertObject:term atIndex:0];// TODO: change to location currently selected in the text field
+    
 }
+
+
 
 -(void) setCurve:(NSArray * ) equation {
     NSMutableArray * curvePoints = [[NSMutableArray alloc] initWithCapacity:SIDE];
@@ -207,6 +231,17 @@ end: //TODO: set up send button in the bottom left of buttonview
     [_graph setNeedsDisplay];
 }
 
+#pragma Gesture Handling
+
+-(void) singleTap:(UITapGestureRecognizer *)recognizer {
+    // TODO : create circle dot uiview instead of having to redraw the whole graph every time a location is tapped
+            // add UILabel with (x,y) truncated to 2 decimal places whose location relative to the dot is dependent on the dot's quadrant
+    CGPoint location = [recognizer locationInView:recognizer.view];
+    [_graph setSelectedX:location.x];
+    [_graph setNeedsDisplay];
+}
+
+#pragma zoom
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)_graphScrollView {
     return _graph;
@@ -235,21 +270,6 @@ end: //TODO: set up send button in the bottom left of buttonview
     }
     
     _graph.frame = contentsFrame;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-
-    CGRect scrollViewFrame = _graphScrollView.frame;
-    CGFloat scaleWidth = scrollViewFrame.size.width / _graphScrollView.contentSize.width;
-    CGFloat scaleHeight = scrollViewFrame.size.height / _graphScrollView.contentSize.height;
-    CGFloat minScale = MIN(scaleWidth, scaleHeight);
-    _graphScrollView.minimumZoomScale = minScale;
- 
-    _graphScrollView.maximumZoomScale = 1.0f;
-    _graphScrollView.zoomScale = (minScale + 1.0f) / 2;
-    [_graphScrollView setContentOffset:CGPointMake(SIDE/2 - _graphScrollView.zoomScale * SIDE / 2, SIDE /2 - _graphScrollView.zoomScale * SIDE / 2) animated:YES];
-    [self centerScrollViewContents];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface CalcButton : UIButton {
-    NSString * _stringRepresentation;
-    NSNumber * pointValue;
+    
 }
-
+@property (strong) NSString * stringRepresentation;
+@property NSNumber * pointValue;
 -(id) initWithFrame:(CGRect)frame stringRep:(NSString *)stringrep title:(NSMutableAttributedString *) title;
 @end
